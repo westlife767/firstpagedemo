@@ -48,14 +48,19 @@ CGFloat changeImageCount = 23;
     NSDictionary *nameMap = @{@"pageControl":self.pageControl};
     NSArray *hscoll = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-135-[pageControl(==60)]-135-|" options:0 metrics:nil views:nameMap];
     NSArray *vscoll = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-471-[pageControl(==20)]-77-|" options:0 metrics:nil views:nameMap];
+    [self.view addConstraints:hscoll];
+    [self.view addConstraints:vscoll];
     //初始化登入和注册按钮的约束
     self.bt1.translatesAutoresizingMaskIntoConstraints = NO;
     self.bt2.translatesAutoresizingMaskIntoConstraints  = NO;
     NSDictionary *nameWithButton = @{@"bt1":self.bt1,@"bt2":self.bt2};
-    NSArray *bt1 = [NSLayoutConstraint constraintsWithVisualFormat:<#(nonnull NSString *)#> options:<#(NSLayoutFormatOptions)#> metrics:<#(nullable NSDictionary<NSString *,id> *)#> views:<#(nonnull NSDictionary<NSString *,id> *)#>]
-    [self.view addConstraints:hscoll];
-    [self.view addConstraints:vscoll];
-  
+    NSArray *bt1 = [NSLayoutConstraint constraintsWithVisualFormat:
+                    @"H:|-10-[bt1(==145)]-10-[bt2(==145)]-10-|" options:0 metrics:nil views:nameWithButton];
+    NSArray *bt1V = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-500-[bt1(==40)]-8-|" options:0 metrics:nil views:nameWithButton];
+    NSArray *bt2V = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-500-[bt2(==40)]-8-|" options:0 metrics:nil views:nameWithButton];
+    [self.view addConstraints:bt1];
+    [self.view addConstraints:bt1V];
+    [self.view addConstraints:bt2V];
     
 }
 - (void)viewWillAppear:(BOOL)animated
@@ -215,11 +220,44 @@ CGFloat changeImageCount = 23;
     self.bt1 = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.bt1 setTitle:@"登入" forState:UIControlStateNormal];
     [self.bt1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.bt1 setBackgroundColor:[UIColor clearColor]];
+    //button1普通状态下的背景色
+    [self.bt1 addTarget:self action:@selector(button1BackGroundNormal:) forControlEvents:UIControlEventTouchUpInside];
+    //button1按下状态的背景色
+     [self.bt1 addTarget:self action:@selector(button1BackGroundHighted:) forControlEvents:UIControlEventTouchDown];
+    [self.bt1 setBackgroundColor:[UIColor colorWithRed:192.0/255 green:192.0/255 blue:192.0/255 alpha:0.5f]];
+    
     self.bt2 = [[UIButton alloc] init];
     [self.bt2 setTitle:@"注册" forState:UIControlStateNormal];
-    [self.bt1 setBackgroundColor:[UIColor greenColor]];
-    [self.bt1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    //button2普通状态下的背景色
+    [self.bt2 addTarget:self action:@selector(button2BackGroundNormal:) forControlEvents:UIControlEventTouchUpInside];
+    //button2按下状态的背景色
+    [self.bt2 addTarget:self action:@selector(button2BackGroundHighted:) forControlEvents:UIControlEventTouchDown];
+    [self.bt2 setBackgroundColor:[UIColor colorWithRed:127.0/255 green:255.0/255 blue:212.0/255 alpha:1.0f]];
+    [self.bt2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.view insertSubview:self.bt1 aboveSubview:self.scrollview];
+    [self.view insertSubview:self.bt2 aboveSubview:self.scrollview];
+    
+}
+//button1普通状态下的背景色
+-(void)button1BackGroundNormal:(UIButton *)sender
+{
+    sender.backgroundColor = [UIColor colorWithRed:192.0/255 green:192.0/255 blue:192.0/255 alpha:0.5f];
+}
+//button1按下的背景色
+-(void)button1BackGroundHighted:(UIButton *)sender
+{
+    sender.backgroundColor = [UIColor colorWithRed:128.0/255 green:138.0/255 blue:135.0/255 alpha:1.0f];
+
+}
+//button2普通状态下的背景色
+-(void)button2BackGroundNormal:(UIButton *)sender
+{
+    sender.backgroundColor = [UIColor colorWithRed:127.0/255 green:255.0/255 blue:212.0/255 alpha:1.0f];
+}
+//button2按下的背景色
+-(void)button2BackGroundHighted:(UIButton *)sender
+{
+    sender.backgroundColor = [UIColor colorWithRed:0.0/255 green:201.0/255 blue:87.0/255 alpha:1.0f];
     
 }
 -(BOOL)prefersStatusBarHidden{
